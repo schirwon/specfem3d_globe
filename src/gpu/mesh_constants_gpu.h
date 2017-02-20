@@ -1041,10 +1041,12 @@ void gpuCreateCopy_todevice_int (gpu_int_mem *d_array_addr_ptr, int *h_array, si
 void gpuCreateCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size);
 
 void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size);
+void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size, size_t offset);
 void gpuCopy_todevice_double (gpu_double_mem *d_array_addr_ptr, double *h_array, size_t size);
 void gpuCopy_todevice_int (gpu_int_mem *d_array_addr_ptr, int *h_array, size_t size);
 
 void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size);
+void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size, size_t offset);
 
 void gpuMalloc_int (gpu_int_mem *buffer, size_t size);
 void gpuMalloc_realw (gpu_realw_mem *buffer, size_t size);
