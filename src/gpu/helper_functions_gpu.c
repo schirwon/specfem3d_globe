@@ -224,7 +224,7 @@ void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, in
 #ifdef USE_OPENCL
   if (run_opencl) {
     // copies values onto GPU
-    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), h_array, 0, NULL, NULL));
+    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), &h_array[size*(offset-1)], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
@@ -311,7 +311,7 @@ void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array,
 #ifdef USE_OPENCL
   if (run_opencl) {
     // blocking copy
-    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, h_array, 0, NULL, NULL));
+    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, &h_array[size*(offset-1)], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
