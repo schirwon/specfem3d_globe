@@ -323,6 +323,23 @@ void FC_FUNC_(transfer_b_displ_cm_from_device,
 /* ----------------------------------------------------------------------------------------------- */
 
 extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_cm_from_device,
+              TRANSFER_BUF_DISPL_CM_FROM_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_cm_from_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_from_device_realw (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_cm_from_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+extern EXTERN_LANG
 void FC_FUNC_(transfer_b_displ_cm_to_device,
               TRANSFER_B_DISPL_CM_TO_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {
 
@@ -335,6 +352,22 @@ void FC_FUNC_(transfer_b_displ_cm_to_device,
   gpuCopy_todevice_realw (&mp->d_b_displ_crust_mantle, displ, *size);
 
   GPU_ERROR_CHECKING ("after transfer_b_displ_cm_to_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_cm_to_device,
+              TRANSFER_BUF_DISPL_CM_TO_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_cm_to_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+  // copies array to CPU
+  gpuCopy_todevice_realw (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_cm_to_device");
 }
 
 /* ----------------------------------------------------------------------------------------------- */
@@ -377,6 +410,24 @@ void FC_FUNC_(transfer_b_displ_ic_from_device,
 
 
 extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_ic_from_device,
+              TRANSFER_BUF_DISPL_IC_FROM_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_ic_from_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_from_device_realw (&mp->d_b_displ_inner_core, displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_ic_from_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+
+extern EXTERN_LANG
 void FC_FUNC_(transfer_b_displ_ic_to_device,
               TRANSFER_B_DISPL_IC_TO_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {
 
@@ -395,6 +446,23 @@ void FC_FUNC_(transfer_b_displ_ic_to_device,
 
 
 extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_ic_to_device,
+              TRANSFER_BUF_DISPL_IC_TO_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_ic_to_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_todevice_realw (&mp->d_b_displ_inner_core, displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_ic_to_device");
+}
+/* ----------------------------------------------------------------------------------------------- */
+
+
+extern EXTERN_LANG
 void FC_FUNC_(transfer_displ_oc_from_device,
               TRANSFER_DISPL_OC_FROM_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {
 
@@ -408,6 +476,7 @@ void FC_FUNC_(transfer_displ_oc_from_device,
 
   GPU_ERROR_CHECKING ("after transfer_displ_oc_from_device");
 }
+
 
 /* ----------------------------------------------------------------------------------------------- */
 
@@ -428,6 +497,24 @@ void FC_FUNC_(transfer_b_displ_oc_from_device,
 
 /* ----------------------------------------------------------------------------------------------- */
 
+
+extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_oc_from_device,
+              TRANSFER_BUF_DISPL_OC_FROM_DEVICE)(int *size, int *offset, realw *b_displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_oc_from_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_from_device_realw (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_oc_from_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
 extern EXTERN_LANG
 void FC_FUNC_(transfer_b_displ_oc_to_device,
               TRANSFER_B_DISPL_OC_TO_DEVICE)(int *size, realw *b_displ, long *Mesh_pointer_f) {
@@ -441,6 +528,23 @@ void FC_FUNC_(transfer_b_displ_oc_to_device,
   gpuCopy_todevice_realw (&mp->d_b_displ_outer_core, b_displ, *size);
 
   GPU_ERROR_CHECKING ("after transfer_b_displ_oc_to_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_displ_oc_to_device,
+              TRANSFER_BUF_DISPL_OC_TO_DEVICE)(int *size, int *offset, realw *b_displ, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_displ_oc_to_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_todevice_realw (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_displ_oc_to_device");
 }
 
 /* ----------------------------------------------------------------------------------------------- */
@@ -606,6 +710,22 @@ void FC_FUNC_(transfer_b_accel_oc_from_device,
 /* ----------------------------------------------------------------------------------------------- */
 
 extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_accel_oc_from_device,
+              TRANSFER_BUF_ACCEL_OC_FROM_DEVICE)(int *size, int *offset, realw *b_accel, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_accel_oc_from_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_from_device_realw (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_accel_oc_from_device");
+}
+/* ----------------------------------------------------------------------------------------------- */
+
+extern EXTERN_LANG
 void FC_FUNC_(transfer_b_accel_oc_to_device,
               TRANSFER_B_ACCEL_OC_TO_DEVICE)(int *size, realw *b_accel, long *Mesh_pointer_f) {
 
@@ -618,6 +738,23 @@ void FC_FUNC_(transfer_b_accel_oc_to_device,
   gpuCopy_todevice_realw (&mp->d_b_accel_outer_core, b_accel, *size);
 
   GPU_ERROR_CHECKING ("after transfer_b_accel_oc_to_device");
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+extern EXTERN_LANG
+void FC_FUNC_(transfer_buf_accel_oc_to_device,
+              TRANSFER_BUF_ACCEL_OC_TO_DEVICE)(int *size, int *offset, realw *b_accel, long *Mesh_pointer_f) {
+
+  TRACE("transfer_buf_accel_oc_to_device");
+
+  //get mesh pointer out of Fortran integer container
+  Mesh *mp = (Mesh *) *Mesh_pointer_f;
+
+  // copies array to CPU
+  gpuCopy_todevice_realw (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
+
+  GPU_ERROR_CHECKING ("after transfer_buf_accel_oc_to_device");
 }
 
 /* ----------------------------------------------------------------------------------------------- */
