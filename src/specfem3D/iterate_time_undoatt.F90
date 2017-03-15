@@ -146,7 +146,7 @@
     if (ier /= 0 ) call exit_MPI(myrank,'Error allocating b_accel_oc_store_buffer')
     allocate(b_displ_ic_store_buffer(NDIM,NGLOB_INNER_CORE_ADJOINT,NT_DUMP_ATTENUATION),stat=ier)
     if (ier /= 0 ) call exit_MPI(myrank,'Error allocating b_displ_ic_store_buffer')
-
+print *, NDIM, NGLOB_CRUST_MANTLE_ADJOINT, NT_DUMP_ATTENUATION
     ! noise kernel for source strength (sigma_kernel) needs buffer for reconstructed noise_surface_movie array,
     ! otherwise we need file i/o which will considerably slow down performance
     if (NOISE_TOMOGRAPHY == 3) then
@@ -329,10 +329,14 @@
         ! transfers wavefields from GPU to CPU for buffering
         if (GPU_MODE) then!async , bzw, nach letztem sync!
           ! daniel debug: check if these transfers could be made async to overlap
-          call transfer_buf_displ_cm_from_device(NDIM*NGLOB_CRUST_MANTLE,it_of_this_subset,b_displ_cm_store_buffer,Mesh_pointer)
-          call transfer_buf_displ_ic_from_device(NDIM*NGLOB_INNER_CORE,it_of_this_subset,b_displ_ic_store_buffer,Mesh_pointer)
-          call transfer_buf_displ_oc_from_device(NGLOB_OUTER_CORE,it_of_this_subset,b_displ_oc_store_buffer,Mesh_pointer)
-          call transfer_buf_accel_oc_from_device(NGLOB_OUTER_CORE,it_of_this_subset,b_accel_oc_store_buffer,Mesh_pointer)
+          call transfer_buf_displ_cm_from_device(NDIM*NGLOB_CRUST_MANTLE_ADJOINT,it_of_this_subset,&
+          b_displ_cm_store_buffer,Mesh_pointer)
+          call transfer_buf_displ_ic_from_device(NDIM*NGLOB_INNER_CORE_ADJOINT,it_of_this_subset,&
+          b_displ_ic_store_buffer,Mesh_pointer)
+          call transfer_buf_displ_oc_from_device(NGLOB_OUTER_CORE_ADJOINT,it_of_this_subset,&
+          b_displ_oc_store_buffer,Mesh_pointer)
+          call transfer_buf_accel_oc_from_device(NGLOB_OUTER_CORE_ADJOINT,it_of_this_subset,&
+          b_accel_oc_store_buffer,Mesh_pointer)
         else 
           ! stores wavefield in buffers
           b_displ_cm_store_buffer(:,:,it_of_this_subset) = b_displ_crust_mantle(:,:)
@@ -363,13 +367,13 @@
         ! transfers wavefields from CPU to GPU
         if (GPU_MODE) then
           ! daniel debug: check if these transfers could be made async to overlap
-           call transfer_buf_displ_cm_to_device(NDIM*NGLOB_CRUST_MANTLE,it_subset_end-it_of_this_subset+1, &
+           call transfer_buf_displ_cm_to_device(NDIM*NGLOB_CRUST_MANTLE_ADJOINT,it_subset_end-it_of_this_subset+1, &
 b_displ_cm_store_buffer,Mesh_pointer)
-           call transfer_buf_displ_ic_to_device(NDIM*NGLOB_INNER_CORE,it_subset_end-it_of_this_subset+1,&
+           call transfer_buf_displ_ic_to_device(NDIM*NGLOB_INNER_CORE_ADJOINT,it_subset_end-it_of_this_subset+1,&
 b_displ_ic_store_buffer,Mesh_pointer)
-          call transfer_buf_displ_oc_to_device(NGLOB_OUTER_CORE,it_subset_end-it_of_this_subset+1,&
+          call transfer_buf_displ_oc_to_device(NGLOB_OUTER_CORE_ADJOINT,it_subset_end-it_of_this_subset+1,&
 b_displ_oc_store_buffer,Mesh_pointer)
-          call transfer_buf_accel_oc_to_device(NGLOB_OUTER_CORE,it_subset_end-it_of_this_subset+1,&
+          call transfer_buf_accel_oc_to_device(NGLOB_OUTER_CORE_ADJOINT,it_subset_end-it_of_this_subset+1,&
 b_accel_oc_store_buffer,Mesh_pointer)
         else
           b_displ_crust_mantle(:,:) = b_displ_cm_store_buffer(:,:,it_subset_end-it_of_this_subset+1)
