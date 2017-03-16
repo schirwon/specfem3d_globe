@@ -224,13 +224,15 @@ void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, in
 #ifdef USE_OPENCL
   if (run_opencl) {
     // copies values onto GPU
-    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), &h_array[uint32_t(size*(offset-1))], 0, NULL, NULL));
+    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), &h_array[unsigned(size*(offset-1))], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
   if (run_cuda) {
     // copies values onto GPU
-    print_CUDA_error_if_any(cudaMemcpy((realw*) d_array_addr_ptr->cuda,&h_array[uint32_t(size*(offset-1))],size*sizeof(realw),cudaMemcpyHostToDevice),22003);
+    cudaHostRegister(&h_array[unsigned(size*(offset-1))],size*sizeof(realw), 0);
+    print_CUDA_error_if_any(cudaMemcpy((realw*) d_array_addr_ptr->cuda,&h_array[unsigned(size*(offset-1))],size*sizeof(realw),cudaMemcpyHostToDevice),22003);
+    cudaHostUnregister(&h_array[unsigned(size*(offset-1))]);
   }
 #endif
 }
@@ -311,13 +313,15 @@ void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array,
 #ifdef USE_OPENCL
   if (run_opencl) {
     // blocking copy
-    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, &h_array[uint32_t(size*(offset-1))], 0, NULL, NULL));
+    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, &h_array[unsigned(size*(offset-1))], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
   if (run_cuda) {
     // note: cudaMemcpy implicitly synchronizes all other cuda operations
-    print_CUDA_error_if_any(cudaMemcpy(&h_array[uint32_t(size*(offset-1))],d_array_addr_ptr->cuda, sizeof(realw)*size, cudaMemcpyDeviceToHost),33001);
+    cudaHostRegister(&h_array[unsigned(size*(offset-1))],sizeof(realw)*size, 0);
+    print_CUDA_error_if_any(cudaMemcpy(&h_array[unsigned(size*(offset-1))],d_array_addr_ptr->cuda, sizeof(realw)*size, cudaMemcpyDeviceToHost),33001);
+    cudaHostUnregister(&h_array[unsigned(size*(offset-1))]);
   }
 #endif
 }

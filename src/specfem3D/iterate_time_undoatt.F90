@@ -146,7 +146,7 @@
     if (ier /= 0 ) call exit_MPI(myrank,'Error allocating b_accel_oc_store_buffer')
     allocate(b_displ_ic_store_buffer(NDIM,NGLOB_INNER_CORE_ADJOINT,NT_DUMP_ATTENUATION),stat=ier)
     if (ier /= 0 ) call exit_MPI(myrank,'Error allocating b_displ_ic_store_buffer')
-print *, NDIM, NGLOB_CRUST_MANTLE_ADJOINT, NT_DUMP_ATTENUATION
+
     ! noise kernel for source strength (sigma_kernel) needs buffer for reconstructed noise_surface_movie array,
     ! otherwise we need file i/o which will considerably slow down performance
     if (NOISE_TOMOGRAPHY == 3) then
