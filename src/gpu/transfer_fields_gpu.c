@@ -1216,3 +1216,29 @@ void FC_FUNC_(transfer_kernels_hess_cm_tohost,
 
   GPU_ERROR_CHECKING ("after transfer_kernels_hess_cm_tohost");
 }
+
+/* ----------------------------------------------------------------------------------------------- */
+// register host array for pinned memory
+
+extern EXTERN_LANG
+void FC_FUNC_(register_host_array,
+              REGISTER_HOST_ARRAY)(int *size, realw *h_array) {
+
+  TRACE("register_host_array");
+
+  gpuRegisterHost_realw ( h_array, *size);
+
+  GPU_ERROR_CHECKING ("after register_host_array");
+}
+
+
+extern EXTERN_LANG
+void FC_FUNC_(unregister_host_array,
+              UNREGISTER_HOST_ARRAY)(realw *h_array) {
+
+  TRACE("unregister_host_array");
+
+  gpuUnregisterHost_realw (h_array);
+
+  GPU_ERROR_CHECKING ("after unregister_host_array");
+}
