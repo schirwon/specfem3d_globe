@@ -332,7 +332,7 @@ void FC_FUNC_(transfer_buf_displ_cm_from_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_from_device_realw (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
+  gpuCopy_from_device_realw_offset (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_cm_from_device");
 }
@@ -365,7 +365,7 @@ void FC_FUNC_(transfer_buf_displ_cm_to_device,
   //get mesh pointer out of Fortran integer container
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
   // copies array to CPU
-  gpuCopy_todevice_realw (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
+  gpuCopy_todevice_realw_offset (&mp->d_b_displ_crust_mantle, displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_cm_to_device");
 }
@@ -419,7 +419,7 @@ void FC_FUNC_(transfer_buf_displ_ic_from_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_from_device_realw (&mp->d_b_displ_inner_core, displ, *size, *offset);
+  gpuCopy_from_device_realw_offset (&mp->d_b_displ_inner_core, displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_ic_from_device");
 }
@@ -455,7 +455,7 @@ void FC_FUNC_(transfer_buf_displ_ic_to_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_todevice_realw (&mp->d_b_displ_inner_core, displ, *size, *offset);
+  gpuCopy_todevice_realw_offset (&mp->d_b_displ_inner_core, displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_ic_to_device");
 }
@@ -508,7 +508,7 @@ void FC_FUNC_(transfer_buf_displ_oc_from_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_from_device_realw (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
+  gpuCopy_from_device_realw_offset (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_oc_from_device");
 }
@@ -542,7 +542,7 @@ void FC_FUNC_(transfer_buf_displ_oc_to_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_todevice_realw (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
+  gpuCopy_todevice_realw_offset (&mp->d_b_displ_outer_core, b_displ, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_displ_oc_to_device");
 }
@@ -719,7 +719,7 @@ void FC_FUNC_(transfer_buf_accel_oc_from_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_from_device_realw (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
+  gpuCopy_from_device_realw_offset (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_accel_oc_from_device");
 }
@@ -752,7 +752,7 @@ void FC_FUNC_(transfer_buf_accel_oc_to_device,
   Mesh *mp = (Mesh *) *Mesh_pointer_f;
 
   // copies array to CPU
-  gpuCopy_todevice_realw (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
+  gpuCopy_todevice_realw_offset (&mp->d_b_accel_outer_core, b_accel, *size, *offset);
 
   GPU_ERROR_CHECKING ("after transfer_buf_accel_oc_to_device");
 }
