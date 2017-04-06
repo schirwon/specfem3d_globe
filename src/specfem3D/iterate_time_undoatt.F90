@@ -328,6 +328,7 @@
 
         ! transfers wavefields from GPU to CPU for buffering
         if (GPU_MODE) then!async , bzw, nach letztem sync!
+#if defined(USE_CUDA) || defined(USE_OPENCL)
           if(it_of_this_subset .GE. 2) then
             call unregister_host_array(b_displ_cm_store_buffer(:,:, it_of_this_subset-1))
             call unregister_host_array(b_displ_ic_store_buffer(:,:, it_of_this_subset-1))
@@ -338,6 +339,7 @@
           call register_host_array(NDIM*NGLOB_INNER_CORE_ADJOINT, b_displ_ic_store_buffer(:,:, it_of_this_subset))
           call register_host_array(NGLOB_OUTER_CORE_ADJOINT, b_displ_oc_store_buffer(:, it_of_this_subset))
           call register_host_array(NGLOB_OUTER_CORE_ADJOINT, b_accel_oc_store_buffer(:, it_of_this_subset))
+#endif
           ! daniel debug: check if these transfers could be made async to overlap
           call transfer_buf_displ_cm_from_device(NDIM*NGLOB_CRUST_MANTLE_ADJOINT,it_of_this_subset,&
           b_displ_cm_store_buffer,Mesh_pointer)
@@ -424,6 +426,7 @@ b_accel_oc_store_buffer,Mesh_pointer)
           call compute_forces_viscoelastic()
 
         enddo ! istage
+#if defined(USE_CUDA) || defined(USE_OPENCL)
         if (GPU_MODE) then
           call unregister_host_array(b_displ_cm_store_buffer(:,:, it_subset_end-it_of_this_subset+1))
           call unregister_host_array(b_displ_ic_store_buffer(:,:, it_subset_end-it_of_this_subset+1))
@@ -437,6 +440,7 @@ b_accel_oc_store_buffer,Mesh_pointer)
             call register_host_array(NGLOB_OUTER_CORE_ADJOINT, b_accel_oc_store_buffer(:, it_subset_end-it_of_this_subset))
           endif
         endif
+#endif
         ! write the seismograms with time shift
         call write_seismograms()
 
