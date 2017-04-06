@@ -215,24 +215,22 @@ void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, si
 #endif
 }
 
-void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, int size, int offset) {
+void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size, size_t offset) {
 
   TRACE ("gpuCopy_todevice_realw");
 
-  unsigned long long int size_llu = size;
-  unsigned long long int offset_llu = offset-1;
   // copies memory on from CPU to GPU
   // uses blocking copies
 #ifdef USE_OPENCL
   if (run_opencl) {
     // copies values onto GPU
-    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), &h_array[size_llu*offset_llu], 0, NULL, NULL));
+    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (realw), &h_array[size*(offset-1)], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
   if (run_cuda) {
     // copies values onto GPU
-    print_CUDA_error_if_any(cudaMemcpy((realw*) d_array_addr_ptr->cuda,&h_array[size_llu*offset_llu],size*sizeof(realw),cudaMemcpyHostToDevice),22003);
+    print_CUDA_error_if_any(cudaMemcpy((realw*) d_array_addr_ptr->cuda,&h_array[size*(offset-1)],size*sizeof(realw),cudaMemcpyHostToDevice),22003);
   }
 #endif
 }
@@ -241,7 +239,7 @@ void gpuCopy_todevice_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, in
 
 // (un)register CPU host real array 
 
-void gpuRegisterHost_realw ( realw *h_array, const unsigned int size) {
+void gpuRegisterHost_realw ( realw *h_array, const size_t size) {
 
   TRACE ("gpuRegisterHost_realw");
 
@@ -303,7 +301,7 @@ void gpuCopy_todevice_int (gpu_int_mem *d_array_addr_ptr, int *h_array, size_t s
 #ifdef USE_OPENCL
   if (run_opencl) {
     // copies values onto GPU
-    clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (int), h_array, 0, NULL, NULL));
+ //   clCheck (clEnqueueWriteBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, size * sizeof (int), h_array, 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
@@ -336,23 +334,21 @@ void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array,
 #endif
 }
 
-void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, int size, int offset) {
+void gpuCopy_from_device_realw (gpu_realw_mem *d_array_addr_ptr, realw *h_array, size_t size, size_t offset) {
 
   TRACE ("gpuCopy_from_device_realw");
 
-  unsigned long long size_llu = size;
-  unsigned long long offset_llu = offset-1;
   // copies memory from GPU back to CPU
 #ifdef USE_OPENCL
   if (run_opencl) {
     // blocking copy
-    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, &h_array[size_llu*offset_llu], 0, NULL, NULL));
+    clCheck (clEnqueueReadBuffer (mocl.command_queue, d_array_addr_ptr->ocl, CL_TRUE, 0, sizeof (realw) * size, &h_array[size*(offset-1)], 0, NULL, NULL));
   }
 #endif
 #ifdef USE_CUDA
   if (run_cuda) {
     // note: cudaMemcpy implicitly synchronizes all other cuda operations
-    print_CUDA_error_if_any(cudaMemcpy(&h_array[size_llu*offset_llu],d_array_addr_ptr->cuda, sizeof(realw)*size, cudaMemcpyDeviceToHost),33001);
+    print_CUDA_error_if_any(cudaMemcpy(&h_array[size*(offset-1)],d_array_addr_ptr->cuda, sizeof(realw)*size, cudaMemcpyDeviceToHost),33001);
   }
 #endif
 }
