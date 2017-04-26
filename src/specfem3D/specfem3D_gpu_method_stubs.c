@@ -630,14 +630,14 @@ void FC_FUNC_(transfer_displ_cm_from_device,
 void FC_FUNC_(transfer_b_displ_cm_from_device,
               TRANSFER_B_DISPL_CM_FROM_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {}
 
-void FC_FUNC_(transfer_buf_displ_cm_from_device,
-              TRANSFER_BUF_DISPL_CM_FROM_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {}
+void FC_FUNC_(transfer_ofs_b_displ_cm_from_device,
+              TRANSFER_OFS_B_DISPL_CM_FROM_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {}
 
 void FC_FUNC_(transfer_b_displ_cm_to_device,
               TRANSFER_B_DISPL_CM_TO_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {}
 
-void FC_FUNC_(transfer_buf_displ_cm_to_device,
-              TRANSFER_BUF_DISPL_CM_TO_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {}
+void FC_FUNC_(transfer_ofs_b_displ_cm_to_device,
+              TRANSFER_OFS_B_DISPL_CM_TO_DEVICE)(int *size, int *offset, realw *displ, long *Mesh_pointer_f) {}
 
 void FC_FUNC_(transfer_displ_ic_from_device,
               TRANSFER_DISPL_IC_FROM_DEVICE)(int *size, realw *displ, long *Mesh_pointer_f) {}
